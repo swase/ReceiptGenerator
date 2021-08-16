@@ -8,4 +8,4 @@ A C# WPF project. Allows users to create a printable receipt based on restaurant
 - Ability to add and remove items in database
 - Ability to set price on items in database
 - Ability to remove billed items / change bill
-- Restrict / allow permissions of acces 
+- Restrict / allow permissions of access
