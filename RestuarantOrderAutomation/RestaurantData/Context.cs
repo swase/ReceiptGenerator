@@ -24,13 +24,13 @@ namespace RestaurantData
             }
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
 
-            modelBuilder.Entity<Order>()
-            .Property(p => p.OrderID)
-            .ValueGeneratedOnAdd();
-        }
+        //    modelBuilder.Entity<Order>()
+        //    .Property(p => p.OrderID)
+        //    .ValueGeneratedOnAdd();
+        //}
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
 
