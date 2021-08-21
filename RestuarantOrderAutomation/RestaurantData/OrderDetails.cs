@@ -11,8 +11,12 @@ namespace RestaurantData
         public int OrderItemID { get; set; }
         //public double PriceWithDiscount { get; set; }
         public int Quantity { get; set; }
-        public virtual Product Product { get; set; }
+        //public int ItemTotal { get; set; }
 
-        public virtual ICollection<Order> Order { get; set; }
+        public int ProductID { get; set; }
+        public Product Product { get; set; }
+
+        public int? OrderID { get; set; }
+        public Order Order { get; set; }
     }
 }

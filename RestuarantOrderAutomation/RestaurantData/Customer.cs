@@ -9,7 +9,7 @@ namespace RestaurantData
     {
         [Key]
         public int CustomerID { get; set; }
-        public virtual Order Order { get; set; }
+        //public virtual Order Order { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
     }

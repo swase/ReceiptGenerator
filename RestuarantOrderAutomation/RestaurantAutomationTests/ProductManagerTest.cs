@@ -19,7 +19,7 @@ namespace RestaurantAutomationTests
             {
                 var selectedProduct =
                 from p in db.Products
-                where p.ProductID == 8008145
+                where p.ProductName.Contains("TestProduct")
                 select p;
 
                 db.Products.RemoveRange(selectedProduct);
@@ -33,22 +33,21 @@ namespace RestaurantAutomationTests
             using (var db = new Context())
             {
                 int originalCount = db.Products.Count();
-                _pm.Create("TestProduct", 15.5, 8008145);
-                Assert.That(++originalCount, Is.EqualTo(db.Products.Count()));
-
-                //Remove TestProduct
+                _pm.Create("TestProduct", 15.5);
+                int newCount = db.Products.Count();
+                Assert.That(originalCount + 1, Is.EqualTo(newCount));
             }
         }
 
         [Test]
         public void WhenANewProductIsAdded_DetailsAreCorrect()
         {
-            _pm.Create("TestProduct", 15.5, 8008145);
+            _pm.Create("TestProduct", 15.5);
             using (var db = new Context())
             {
                 var testProductAddQuery =
-                    db.Products.Where(p => p.ProductID == 8008145).FirstOrDefault();
-                Assert.That("TestProduct", Is.EqualTo(testProductAddQuery.ProductName));
+                    db.Products.Where(p => p.ProductName == "TestProduct").FirstOrDefault();
+                Assert.That(testProductAddQuery, Is.Not.Null);
                 Assert.That(15.5, Is.EqualTo(testProductAddQuery.Price));
             }
         }
@@ -56,13 +55,18 @@ namespace RestaurantAutomationTests
         [Test]
         public void WhenAProductNameIsChanged_TheDataBaseIsUpdated()
         {
-            _pm.Create("TestProduct", 15.5, 8008145);
-            _pm.Update(8008145,"TestProductNewName", 14.0);
+            _pm.Create("TestProduct", 15.5);
+            
 
             using (var db = new Context())
             {
+                var selectProduct =
+                    db.Products.Where(p => p.ProductName == "TestProduct").Select(p => p.ProductID).FirstOrDefault();
+
+                _pm.Update("TestProduct", "TestProductNewName", 14.0);
                 var selectUpdatedProduct =
-                    db.Products.Where(p => p.ProductID == 8008145).First();
+                    db.Products.Where(p => p.ProductID == selectProduct).FirstOrDefault();
+
                 Assert.That("TestProductNewName", Is.EqualTo(selectUpdatedProduct.ProductName));
                 Assert.That(14.0, Is.EqualTo(selectUpdatedProduct.Price));
 
@@ -71,18 +75,19 @@ namespace RestaurantAutomationTests
         [Test]
         public void WhenTryingToUpdateProductThatDoesntExist_returnsFalse()
         {
-            Assert.IsFalse(_pm.Update(8008145, "TestProductNewName", 14.0));
+            Assert.IsFalse(_pm.Update("TestProduct", "TestProductNewName", 14.0));
+
         }
 
         [Test]
         public void WhenAProductIsDeleted_TotalProductCountDecreasesBy1()
         {
-            _pm.Create("TestProduct", 15.5, 8008145);
+            _pm.Create("TestProduct", 15.5);
             using (var db = new Context())
             {
                 int productCountAfterAdding =
                     db.Products.Count();
-                _pm.Delete(8008145);
+                _pm.Delete("TestProduct");
                 Assert.That(productCountAfterAdding - 1, Is.EqualTo(db.Products.Count()));
             }
         }
@@ -90,18 +95,24 @@ namespace RestaurantAutomationTests
         [Test]
         public void WhenAProductIsDeleted_DataBaseIsUpdated()
         {
-            _pm.Create("TestProduct", 15.5, 8008145);
+            _pm.Create("TestProduct", 15.5);
             
             using(var db = new Context())
             {
                 var countAfterAdding =
                     db.Products.Count();
 
-                _pm.Delete(8008145);
+                _pm.Delete("TestProduct");
                 var countAfterDeleting = db.Products.Count();
 
                 Assert.That(countAfterAdding - 1, Is.EqualTo(countAfterDeleting));
             }
+        }
+
+        [Test]
+        public void WhenTryingToDeleteANonExistingProduct_returnsFalse()
+        {
+            Assert.IsFalse(_pm.Delete("TestProduct"));     
         }
 
 
@@ -114,7 +125,7 @@ namespace RestaurantAutomationTests
             {
                 var selectedProduct =
                 from p in db.Products
-                where p.ProductID == 8008145
+                where p.ProductName.Contains("TestProduct")
                 select p;
 
                 db.Products.RemoveRange(selectedProduct);

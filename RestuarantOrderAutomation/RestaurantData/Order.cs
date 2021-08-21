@@ -7,13 +7,14 @@ namespace RestaurantData
 {
     public class Order
     {
-        [Key]
+        //[ForeignKey("OrderDetail")]
         public int OrderID { get; set; }
         public double Subtotal { get; set; }
-        public int CustomerID { get; set; } 
-        //public int ProductID { get; set; }
+        //public Customer Customer { get; set; }
+        public string Status { get; set; }
 
-        
-        //public virtual ICollection<Product> Product { get; set; }
+        public int? OrderItemID { get; set; }
+        public ICollection<OrderDetail> OrderDetail { get; set; }
+
     }
 }

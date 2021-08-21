@@ -9,84 +9,86 @@ namespace BusinessLayer
 
     public class OrderManager
     {
-        //public void Create(int OrderID, double price, int productID = -999)
-        //{
+        public static int Create(double subtotal, string status)
+        {
 
-        //    using (var db = new Context())
-        //    {
-        //        if (productID == -999)
-        //        {
-        //            productID =
-        //            db.Products.Count() + 1;
-        //        }
+            using (var db = new Context())
+            {
+                try
+                {
+                    var o = new Order() { Subtotal = subtotal, Status =  status, OrderItemID = null};
+                    db.Orders.Add(o);
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("Error trying to add orderItem");
+                }
+                return db.Orders.Count();
+            }
+        }
 
-        //        var product = new Product() { ProductID = productID, ProductName = pName, Price = price };
-        //        db.Products.Add(product);
-        //        db.SaveChanges();
-        //    }
-        //}
+        public bool Update(int orderID, double subtotal, string status, int orderItemID)
+        {
+            using (var db = new Context())
+            {
+                var orderToUpdate =
+                    db.Orders.Where(o => o.OrderID == orderID).FirstOrDefault();
 
-        //public bool Update(int prodID, string pName, double price)
-        //{
-        //    using (var db = new Context())
-        //    {
-        //        var productToUpdate =
-        //            db.Products.Where(p => p.ProductID == prodID).FirstOrDefault();
+                if (orderToUpdate == null)
+                {
+                    Debug.WriteLine($"Product {orderID} not found");
+                    return false;
+                }
+                else
+                {
+                    orderToUpdate.Subtotal = subtotal;
+                    orderToUpdate.Status = status;
+                    orderToUpdate.OrderItemID = orderItemID;
 
-        //        if (productToUpdate == null)
-        //        {
-        //            Debug.WriteLine($"Product with ID: {prodID} not found");
-        //            return false;
-        //        }
-        //        else
-        //        {
-        //            productToUpdate.ProductName = pName;
-        //            productToUpdate.Price = price;
+                    try
+                    {
+                        db.SaveChanges();
 
-        //            try
-        //            {
-        //                db.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"Error updating {orderID}");
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
 
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                Debug.WriteLine($"Error updating {prodID}");
-        //                return false;
-        //            }
-        //        }
-        //    }
-        //    return true;
-        //}
+        public bool Delete(int orderID)
+        {
+            using (var db = new Context())
+            {
+                var orderToDelete =
+                    db.Orders.Where(o => o.OrderID == orderID).FirstOrDefault();
+                if (orderToDelete == null)
+                {
+                    Debug.WriteLine($"Problem removing orderItem with ID: {orderID}");
+                    return false;
+                }
 
-        //public bool Delete(int prodID)
-        //{
-        //    using (var db = new Context())
-        //    {
-        //        var productToDelete =
-        //            db.Products.Where(p => p.ProductID == prodID).FirstOrDefault();
-        //        if (productToDelete == null)
-        //        {
-        //            Debug.WriteLine($"Problem removing product with ID: {prodID}");
-        //            return false;
-        //        }
-
-        //        else
-        //        {
-        //            try
-        //            {
-        //                db.Products.RemoveRange(productToDelete);
-        //                db.SaveChanges();
-        //            }
-        //            catch (Exception e)
-        //            {
-        //                Debug.WriteLine($"Problem removing product with ID: {prodID}");
-        //                return false;
-        //            }
-        //            return true;
-
-        //        }
-        //    }
-        //}
+                else
+                {
+                    try
+                    {
+                        db.Orders.RemoveRange(orderToDelete);
+                        db.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"Problem removing orderItem with ID: {orderID}");
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
     }
 }
 

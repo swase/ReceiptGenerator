@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -9,38 +10,72 @@ namespace BusinessLayer
 
     public class ProductManager
     {
-       public void Create(string pName, double price, int productID = -999)
+        public Product SelectedProduct { get; set; }
+
+        public void SetSelectedProduct(object selectedItem)
+        {
+            SelectedProduct = (Product)selectedItem;
+        }
+
+        public string GetProductName(object selectedObject)
+        {
+            var selectedProductName = (Product)selectedObject;
+            return selectedProductName.ProductName;
+        }
+        public List<Product> RetrieveAll()
+        {
+            using (var db = new Context())
+            {
+                 return db.Products.ToList();            
+            }
+        }
+        public OrderItem RetrieveForCustSelection(Product product)
+        {
+            using (var db = new Context())
+            {
+                var orderItem = new OrderItem()
+                {
+                    ProductName = product.ProductName,
+                    Quantity = 1,
+                    UnitPrice = product.Price * (1 - product.Discount)
+                };
+                orderItem.SetTotal();
+                return orderItem;
+            }   
+        }
+        public void Create(string pName, double price)
         {
 
             using(var db = new Context())
             {
-                if(productID == -999)
+                //Ceck For product Duplicates
+                var queryIfProductInCatalogue =
+                    db.Products.Where(p => p.ProductName == pName).FirstOrDefault();
+                if (queryIfProductInCatalogue == null)
                 {
-                    productID =
-                    db.Products.Count() + 1;
-                }
-
-                var product = new Product() {ProductID = productID,ProductName = pName, Price = price };
-                db.Products.Add(product);
-                db.SaveChanges();
+                    var product = new Product() {ProductName = pName, Price = price };
+                    db.Products.Add(product);
+                    db.SaveChanges();
+                    
+                }  
             }
         }
 
-        public bool Update(int prodID, string pName, double price)
+        public bool Update(string pName, string newName, double price)
         {
             using (var db = new Context())
             {
                 var productToUpdate =
-                    db.Products.Where(p => p.ProductID == prodID).FirstOrDefault();
+                    db.Products.Where(p => p.ProductName == pName).FirstOrDefault();
                 
                 if(productToUpdate == null)
                 {
-                    Debug.WriteLine($"Product with ID: {prodID} not found");
+                    Debug.WriteLine($"Product {pName} not found");
                     return false;
                 }
                 else
                 {
-                    productToUpdate.ProductName = pName;
+                    productToUpdate.ProductName = newName;
                     productToUpdate.Price = price;
 
                     try
@@ -50,7 +85,7 @@ namespace BusinessLayer
                     }
                     catch(Exception e)
                     {
-                        Debug.WriteLine($"Error updating {prodID}");
+                        Debug.WriteLine($"Error updating {pName}");
                         return false;
                     }
                 }
@@ -58,6 +93,7 @@ namespace BusinessLayer
             return true;
         }
 
+        //Remove using prodID
         public bool Delete(int prodID)
         {
             using (var db = new Context())
@@ -81,11 +117,40 @@ namespace BusinessLayer
                     {
                         Debug.WriteLine($"Problem removing product with ID: {prodID}");
                         return false;
-                    }
-                    return true;
-                    
+                    }                                      
                 }
             }
+            return true;
+        }
+
+        //Remove using productName
+        public bool Delete(string pName)
+        {
+            using (var db = new Context())
+            {
+                var productToDelete =
+                    db.Products.Where(p => p.ProductName == pName).FirstOrDefault();
+                if (productToDelete == null)
+                {
+                    Debug.WriteLine($"Problem removing product {pName}");
+                    return false;
+                }
+
+                else
+                {
+                    try
+                    {
+                        db.Products.RemoveRange(productToDelete);
+                        db.SaveChanges();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"Problem removing product {pName}");
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
     }
 }
