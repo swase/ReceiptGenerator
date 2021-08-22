@@ -26,6 +26,7 @@ namespace RestuarantOrderAutomationUI
             InitializeComponent();
             lbCustomerOrderList.ItemsSource = _custLogic.CurrentOrder;
             lbProductSelection.ItemsSource = _custLogic.Products;
+            SubtotalLabel.DataContext = _custLogic;
         }
 
         private void btnAddProductToOrder_Click(object sender, RoutedEventArgs e)

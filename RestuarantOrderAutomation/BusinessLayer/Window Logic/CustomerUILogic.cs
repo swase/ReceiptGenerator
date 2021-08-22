@@ -5,16 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 using BusinessLayer.DataManager;
 using RestaurantData;
+using System.ComponentModel;
 
 namespace BusinessLayer
 {
-    public class CustomerUILogic
+    public class CustomerUILogic : INotifyPropertyChanged
     {
         private ProductManager _productManager = new ProductManager();
         private int _orderID = OrderManager.Create(0, "ordering");
         public List<OrderItem> CurrentOrder { get; set; }
 
         public List<Product> Products { get; set; }
+        private double _subtotal = 0;
+
+        public double Subtotal 
+        {
+            get { return _subtotal; }
+            set
+            {
+                _subtotal = value;
+                OnPropertyChanged(nameof(Subtotal));
+
+            }
+        }
+
         public CustomerUILogic()
         {
             Products = _productManager.RetrieveAll();
@@ -33,15 +47,16 @@ namespace BusinessLayer
             else
             {
                 query.Quantity++;
-                query.SetTotal(); 
-                
+                query.SetTotal();
             }
+            CalculateSubtotal();
         }
 
         public void RemoveOrderItem(OrderItem orderItem)
         {
             var query = CurrentOrder.Where(i => i.ProductName == orderItem.ProductName).FirstOrDefault();
             CurrentOrder.Remove(query);
+            CalculateSubtotal();
         }
 
         public void ReduceItemQuantity(OrderItem orderItem)
@@ -51,13 +66,15 @@ namespace BusinessLayer
             {
                 CurrentOrder.Remove(query);
                 query.SetTotal();
-
+                
             }
             else
             {
                 orderItem.Quantity--;
                 query.SetTotal();
+                
             }
+            CalculateSubtotal();
         }
 
         public void IncreaseItemQuantity(OrderItem orderItem)
@@ -66,7 +83,29 @@ namespace BusinessLayer
 
             query.Quantity++;
             query.SetTotal();
+            CalculateSubtotal();
 
+        }
+
+        public void CalculateSubtotal()
+        {
+            double tempTotal = 0;
+            foreach (var item in CurrentOrder)
+            {
+                tempTotal += item.UnitPrice * item.Quantity;
+
+            }
+            Subtotal = tempTotal;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
         }
 
     }

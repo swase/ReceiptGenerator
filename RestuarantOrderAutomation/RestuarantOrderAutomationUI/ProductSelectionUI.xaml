@@ -102,14 +102,16 @@
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
+                <Label Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" HorizontalAlignment="Center">Order Subtotal</Label>
+                <Label Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" Name="SubtotalLabel" Content="{Binding Subtotal}"></Label>
+                <Label Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Center">Quanity</Label>
+                <Button Grid.Row="1" Grid.Column="0" Name="ReduceQuantity" Height="37" VerticalAlignment="Top" Click="ReduceQuantity_Click">-</Button>
+                <Button Grid.Row="1" Grid.Column="3" Name="AddQuantity" Click="AddQuantity_Click">+</Button>
 
-                <Label Grid.ColumnSpan="2" Grid.Row="0" Grid.Column="1" Name="AdjustItemQuantity" HorizontalAlignment="Center">Quanity</Label>
-                <Button Grid.Row="0" Grid.Column="0" Name="ReduceQuantity" Height="37" VerticalAlignment="Top" Click="ReduceQuantity_Click">-</Button>
-                <Button Grid.Row="0" Grid.Column="3" Name="AddQuantity" Click="AddQuantity_Click">+</Button>
-
-                <Button Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" Name="RemoveFromOrderList" Click="RemoveFromOrderList_Click" >Remove</Button>
-                <Button Grid.ColumnSpan="2" Grid.Column="2" Grid.Row="1" Name="SubmitOrder" >Complete Order</Button>
+                <Button Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0" Name="RemoveFromOrderList" Click="RemoveFromOrderList_Click" >Remove</Button>
+                <Button Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="2" Name="SubmitOrder" >Complete Order</Button>
             </Grid>
         </Grid >
     </Grid>
