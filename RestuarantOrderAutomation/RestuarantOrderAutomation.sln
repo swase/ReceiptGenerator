@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "BusinessLa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantData", "RestaurantData\RestaurantData.csproj", "{057F799B-38DC-4A6F-AC84-1D0080E3A508}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestaurantAutomationTests", "RestaurantAutomationTests\RestaurantAutomationTests.csproj", "{C78BDF08-79A7-4D67-B951-E8A936E79AAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RestaurantAutomationTests", "RestaurantAutomationTests\RestaurantAutomationTests.csproj", "{C78BDF08-79A7-4D67-B951-E8A936E79AAF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -17,11 +17,30 @@ namespace BusinessLayer
             SelectedProduct = (Product)selectedItem;
         }
 
-        public string GetProductName(object selectedObject)
+        public static int GetProductID(string pName)
         {
-            var selectedProductName = (Product)selectedObject;
-            return selectedProductName.ProductName;
+            using (var db = new Context())
+            {
+                var selectedProductID =
+                    db.Products.Where(p => p.ProductName == pName)
+                    .Select(p => p.ProductID)
+                    .FirstOrDefault();
+                return selectedProductID;
+            }
         }
+
+        public static string GetProductName(int pID)
+        {
+            using (var db = new Context())
+            {
+                var selectedProductID =
+                    db.Products.Where(p => p.ProductID == pID)
+                    .Select(p => p.ProductName)
+                    .FirstOrDefault();
+                return selectedProductID;
+            }
+        }
+
         public List<Product> RetrieveAll()
         {
             using (var db = new Context())

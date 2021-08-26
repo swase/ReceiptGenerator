@@ -1,4 +1,6 @@
-﻿using System;
+﻿using BusinessLayer;
+using RestaurantData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,18 +12,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
-using RestaurantData;
-using BusinessLayer;
-using System.Data;
 
-namespace RestuarantOrderAutomationUI
+namespace RestuarantOrderAutomationUI.CustomerView
 {
-    
-    public partial class ProductSelectionUI : Window
+    /// <summary>
+    /// Interaction logic for MenuSelection.xaml
+    /// </summary>
+    public partial class MenuSelection : Window
     {
         private CustomerUILogic _custLogic = new CustomerUILogic();
-        public ProductSelectionUI()
+        public MenuSelection()
         {
             InitializeComponent();
             lbCustomerOrderList.ItemsSource = _custLogic.CurrentOrder;
@@ -53,7 +55,26 @@ namespace RestuarantOrderAutomationUI
             lbCustomerOrderList.Items.Refresh();
 
         }
+
+        private void SubmitOrder_Click(object sender, RoutedEventArgs e)
+        {
+            if (_custLogic.CurrentOrder.Count != 0)
+            {
+                CustOrderConfirmation.IsOpen = true;
+            }
+        }
+
+        private void Not_Ready_Click(object sender, RoutedEventArgs e)
+        {
+            CustOrderConfirmation.IsOpen = false;
+        }
+
+        private void Confirm_Order_Click(object sender, RoutedEventArgs e)
+        {
+            CustOrderConfirmation.IsOpen = false;
+            _custLogic.ProcessCurrentOrder();
+            this.Close();
+            
+        }
     }
-
-
 }

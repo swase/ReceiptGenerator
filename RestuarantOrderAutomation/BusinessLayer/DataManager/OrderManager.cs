@@ -3,13 +3,23 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using RestaurantData;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace BusinessLayer
 {
 
     public class OrderManager
     {
-        public static int Create(double subtotal, string status)
+        public static List<Order> RetrieveAllActiveOrders()
+        {
+            using (var db = new Context())
+            {
+                return db.Orders.Where(o => o.Status != OrderStatus.Collected && o.Status != OrderStatus.Ordering).ToList();
+            }
+        }
+
+        public static int Create(double subtotal, OrderStatus status)
         {
 
             using (var db = new Context())
@@ -28,7 +38,7 @@ namespace BusinessLayer
             }
         }
 
-        public bool Update(int orderID, double subtotal, string status, int orderItemID)
+        public bool Update(int orderID, double subtotal, OrderStatus status)
         {
             using (var db = new Context())
             {
@@ -44,7 +54,7 @@ namespace BusinessLayer
                 {
                     orderToUpdate.Subtotal = subtotal;
                     orderToUpdate.Status = status;
-                    orderToUpdate.OrderItemID = orderItemID;
+                    orderToUpdate.OrderItemID = null;
 
                     try
                     {
@@ -67,6 +77,8 @@ namespace BusinessLayer
             {
                 var orderToDelete =
                     db.Orders.Where(o => o.OrderID == orderID).FirstOrDefault();
+                var orderDetailsToDelete =
+                    db.OrderDetails.Where(od => od.OrderID == orderID);
                 if (orderToDelete == null)
                 {
                     Debug.WriteLine($"Problem removing orderItem with ID: {orderID}");
@@ -77,6 +89,7 @@ namespace BusinessLayer
                 {
                     try
                     {
+                        db.OrderDetails.RemoveRange(orderDetailsToDelete);
                         db.Orders.RemoveRange(orderToDelete);
                         db.SaveChanges();
                     }
@@ -88,6 +101,27 @@ namespace BusinessLayer
                 }
             }
             return true;
+        }
+
+
+        public int GetNumOrdersForStatus(OrderStatus status)
+        {
+            //Returns list of order details for one order
+            using (var db = new Context())
+            {
+                var queryNumberOrdersWithStatus =
+                db.Orders.Where(od => od.Status == status);
+
+                if(queryNumberOrdersWithStatus != null)
+                {
+                    return queryNumberOrdersWithStatus.Count();
+                }
+                else
+                {
+                    return 0;
+                }
+                
+            }
         }
     }
 }

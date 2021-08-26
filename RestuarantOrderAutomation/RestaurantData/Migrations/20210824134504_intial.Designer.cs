@@ -10,8 +10,8 @@ using RestaurantData;
 namespace RestaurantData.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20210819210140_initial")]
-    partial class initial
+    [Migration("20210824134504_intial")]
+    partial class intial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,8 +49,8 @@ namespace RestaurantData.Migrations
                     b.Property<int?>("OrderItemID")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<double>("Subtotal")
                         .HasColumnType("float");
@@ -80,8 +80,7 @@ namespace RestaurantData.Migrations
 
                     b.HasIndex("OrderID");
 
-                    b.HasIndex("ProductID")
-                        .IsUnique();
+                    b.HasIndex("ProductID");
 
                     b.ToTable("OrderDetails");
                 });
@@ -96,6 +95,9 @@ namespace RestaurantData.Migrations
                     b.Property<double>("Discount")
                         .HasColumnType("float");
 
+                    b.Property<int?>("OrderDetailOrderItemID")
+                        .HasColumnType("int");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -103,6 +105,8 @@ namespace RestaurantData.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProductID");
+
+                    b.HasIndex("OrderDetailOrderItemID");
 
                     b.ToTable("Products");
                 });
@@ -113,15 +117,14 @@ namespace RestaurantData.Migrations
                         .WithMany("OrderDetail")
                         .HasForeignKey("OrderID");
 
-                    b.HasOne("RestaurantData.Product", "Product")
-                        .WithOne("OrderDetail")
-                        .HasForeignKey("RestaurantData.OrderDetail", "ProductID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Order");
+                });
 
-                    b.Navigation("Product");
+            modelBuilder.Entity("RestaurantData.Product", b =>
+                {
+                    b.HasOne("RestaurantData.OrderDetail", null)
+                        .WithMany("Product")
+                        .HasForeignKey("OrderDetailOrderItemID");
                 });
 
             modelBuilder.Entity("RestaurantData.Order", b =>
@@ -129,9 +132,9 @@ namespace RestaurantData.Migrations
                     b.Navigation("OrderDetail");
                 });
 
-            modelBuilder.Entity("RestaurantData.Product", b =>
+            modelBuilder.Entity("RestaurantData.OrderDetail", b =>
                 {
-                    b.Navigation("OrderDetail");
+                    b.Navigation("Product");
                 });
 #pragma warning restore 612, 618
         }

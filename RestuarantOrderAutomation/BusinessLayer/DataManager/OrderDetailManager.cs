@@ -10,7 +10,6 @@ namespace BusinessLayer.DataManager
 {
     class OrderDetailManager
     {
-
         public static List<OrderDetail> GetOrderDetails(int orderID)
         {
             //Returns list of order details for one order
@@ -23,7 +22,7 @@ namespace BusinessLayer.DataManager
         }
 
 
-        public void Create(int quantity, int productID, int orderID)
+        public void Create(int productID, int quantity, int orderID)
         {
             using (var db = new Context())
             {
@@ -36,6 +35,7 @@ namespace BusinessLayer.DataManager
                 catch (Exception e)
                 {
                     Debug.WriteLine("Error trying to add orderItem");
+                    Debug.WriteLine(e.Message);
                 }                              
             }
         }
@@ -82,7 +82,6 @@ namespace BusinessLayer.DataManager
                     Debug.WriteLine($"Problem removing orderItem with ID: {orderItemID}");
                     return false;
                 }
-
                 else
                 {
                     try

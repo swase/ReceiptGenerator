@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="coffee-beans-1291656_1280.jpg" />
+    <None Remove="Resources\refresh.png" />
+    <None Remove="Untitled design.jpg" />
+    <None Remove="WorkersView\refresh.png" />
+    <None Remove="WorkersView\refresh2.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.4.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.9" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.9" />
@@ -19,6 +27,16 @@
   <ItemGroup>
     <ProjectReference Include="..\BusinessLayer\BusinessLayer.csproj" />
     <ProjectReference Include="..\RestaurantData\RestaurantData.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="coffee-beans-1291656_1280.jpg" />
+    <Resource Include="Resources\refresh.png">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Untitled design.jpg" />
+    <Resource Include="WorkersView\refresh.png" />
+    <Resource Include="WorkersView\refresh2.png" />
   </ItemGroup>
 
 </Project>

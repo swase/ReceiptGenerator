@@ -12,7 +12,7 @@ namespace BusinessLayer
     public class CustomerUILogic : INotifyPropertyChanged
     {
         private ProductManager _productManager = new ProductManager();
-        private int _orderID = OrderManager.Create(0, "ordering");
+        private int _orderID = OrderManager.Create(0, OrderStatus.Ordering);
         public List<OrderItem> CurrentOrder { get; set; }
 
         public List<Product> Products { get; set; }
@@ -61,20 +61,21 @@ namespace BusinessLayer
 
         public void ReduceItemQuantity(OrderItem orderItem)
         {
-            var query = CurrentOrder.Where(i => i.ProductName == orderItem.ProductName).FirstOrDefault();
-            if (query.Quantity == 1)
+            if (orderItem != null)
             {
-                CurrentOrder.Remove(query);
-                query.SetTotal();
-                
+                var query = CurrentOrder.Where(i => i.ProductName == orderItem.ProductName).FirstOrDefault();
+                if (query != null && query.Quantity == 1)
+                {
+                    CurrentOrder.Remove(query);
+                    query.SetTotal();
+                }
+                else
+                {
+                    orderItem.Quantity--;
+                    query.SetTotal();
+                }
+                CalculateSubtotal();
             }
-            else
-            {
-                orderItem.Quantity--;
-                query.SetTotal();
-                
-            }
-            CalculateSubtotal();
         }
 
         public void IncreaseItemQuantity(OrderItem orderItem)
@@ -84,7 +85,6 @@ namespace BusinessLayer
             query.Quantity++;
             query.SetTotal();
             CalculateSubtotal();
-
         }
 
         public void CalculateSubtotal()
@@ -105,6 +105,19 @@ namespace BusinessLayer
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
+
+        public void ProcessCurrentOrder()
+        {
+            var orderManager = new OrderManager();
+            var orderDetailManager = new OrderDetailManager();
+            orderManager.Update(_orderID, Subtotal, OrderStatus.OrderConfirmed);
+
+            foreach (var item in CurrentOrder)
+            {
+                int prodID = ProductManager.GetProductID(item.ProductName);
+                orderDetailManager.Create(prodID, item.Quantity, _orderID);
             }
         }
 

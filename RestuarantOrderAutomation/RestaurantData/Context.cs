@@ -24,13 +24,63 @@ namespace RestaurantData
             }
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity("RestaurantData.OrderDetail", b =>
+            {
+                b.Property<int>("OrderItemID")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+     
 
-        //    modelBuilder.Entity<Order>()
-        //    .Property(p => p.OrderID)
-        //    .ValueGeneratedOnAdd();
-        //}
+                b.Property<int?>("OrderID")
+                    .HasColumnType("int");
+
+                b.Property<int>("ProductID")
+                    .HasColumnType("int");
+
+                b.Property<int>("Quantity")
+                    .HasColumnType("int");
+
+                b.HasKey("OrderItemID");
+
+                b.HasIndex("OrderID");
+
+                b.HasIndex("ProductID").IsUnique(false);
+
+                b.ToTable("OrderDetails");
+
+
+            });
+
+            modelBuilder.Entity("RestaurantData.Product", b =>
+            {
+                b.Property<int>("ProductID")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("int");
+
+                b.Property<double>("Discount")
+                    .HasColumnType("float");
+
+                b.Property<int?>("OrderDetailOrderItemID")
+                    .HasColumnType("int");
+
+                b.Property<double>("Price")
+                    .HasColumnType("float");
+
+                b.Property<string>("ProductName")
+                    .HasColumnType("nvarchar(max)");
+
+                b.HasKey("ProductID");
+
+                b.ToTable("Products");
+            });
+
+
+
+
+
+        }
         public DbSet<Product> Products { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }

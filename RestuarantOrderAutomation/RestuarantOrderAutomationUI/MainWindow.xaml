@@ -5,26 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RestuarantOrderAutomationUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        <Label Grid.Row="0" Grid.ColumnSpan="2" Content="Product Entry" Margin="5"/>
-        <Label Grid.Column="0" Grid.Row="1" Content="Product Name:" Margin="5"/>
-        <TextBox Grid.Column="1" Grid.Row="1" Name="ProductName" Margin="5"/>
-        <Label Grid.Column="0" Grid.Row="2" Content="Product Price:" Margin="5"/>
-        <TextBox Grid.Column="1" Grid.Row="2" Name="ProductPrice" Margin="5"/>
-        <Button Grid.ColumnSpan="2" Grid.Row="3" Content="Submit" Margin="5" Click="Button_Click"/>
-        <Label Grid.Row="3" Name="MyLabel" Margin="5"/>
+        Title="MainWindow" Height="800" Width="650">
+    <Grid Background="#383534">
+        <DockPanel Opacity="0.99">
+            <Frame x:Name="_mainFrame" />
+            <Grid Height="746" Width="514" Opacity="1" >
+                <Grid.Background>
+                    <ImageBrush ImageSource="/Untitled design.jpg" Stretch="UniformToFill"/>
+                </Grid.Background>
+                <Button x:Name="NewOrder" 
+                        Click="start_new_order_click"
+                        Background="#B7B5AB" FontSize="48" 
+                        FontWeight="Bold" BorderBrush="#784925" FontStyle="Normal" Foreground="#C48D32" Margin="117,498,117,120"
+                        >New Order
+                </Button>
+            </Grid>
+        </DockPanel>
     </Grid>
+
+
 </Window>

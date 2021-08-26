@@ -11,10 +11,19 @@ namespace RestaurantData
         public int OrderID { get; set; }
         public double Subtotal { get; set; }
         //public Customer Customer { get; set; }
-        public string Status { get; set; }
+        public OrderStatus Status { get; set; }
 
         public int? OrderItemID { get; set; }
         public ICollection<OrderDetail> OrderDetail { get; set; }
 
     }
+
+    public enum OrderStatus
+    {
+        Ordering,
+        OrderConfirmed,
+        Processing,
+        ReadyForCollection,
+        Collected
+    };
 }

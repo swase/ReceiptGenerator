@@ -16,6 +16,6 @@ namespace RestaurantData
         public double Price { get; set; }
         public double Discount { get; set; } = 0.0;
 
-        public OrderDetail OrderDetail { get; set; }
+        //public OrderDetail OrderDetail { get; set; }
     }
 }

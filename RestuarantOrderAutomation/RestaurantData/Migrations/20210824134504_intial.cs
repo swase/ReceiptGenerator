@@ -2,7 +2,7 @@
 
 namespace RestaurantData.Migrations
 {
-    public partial class initial : Migration
+    public partial class intial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,27 +27,12 @@ namespace RestaurantData.Migrations
                     OrderID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Subtotal = table.Column<double>(type: "float", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<int>(type: "int", nullable: false),
                     OrderItemID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Orders", x => x.OrderID);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Products",
-                columns: table => new
-                {
-                    ProductID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    Discount = table.Column<double>(type: "float", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Products", x => x.ProductID);
                 });
 
             migrationBuilder.CreateTable(
@@ -69,12 +54,28 @@ namespace RestaurantData.Migrations
                         principalTable: "Orders",
                         principalColumn: "OrderID",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Products",
+                columns: table => new
+                {
+                    ProductID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    Discount = table.Column<double>(type: "float", nullable: false),
+                    OrderDetailOrderItemID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Products", x => x.ProductID);
                     table.ForeignKey(
-                        name: "FK_OrderDetails_Products_ProductID",
-                        column: x => x.ProductID,
-                        principalTable: "Products",
-                        principalColumn: "ProductID",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FK_Products_OrderDetails_OrderDetailOrderItemID",
+                        column: x => x.OrderDetailOrderItemID,
+                        principalTable: "OrderDetails",
+                        principalColumn: "OrderItemID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -85,8 +86,12 @@ namespace RestaurantData.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_OrderDetails_ProductID",
                 table: "OrderDetails",
-                column: "ProductID",
-                unique: true);
+                column: "ProductID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Products_OrderDetailOrderItemID",
+                table: "Products",
+                column: "OrderDetailOrderItemID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -95,13 +100,13 @@ namespace RestaurantData.Migrations
                 name: "Customers");
 
             migrationBuilder.DropTable(
+                name: "Products");
+
+            migrationBuilder.DropTable(
                 name: "OrderDetails");
 
             migrationBuilder.DropTable(
                 name: "Orders");
-
-            migrationBuilder.DropTable(
-                name: "Products");
         }
     }
 }
