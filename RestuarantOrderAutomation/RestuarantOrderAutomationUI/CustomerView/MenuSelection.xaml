@@ -16,7 +16,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
                         <Border Name="_Border"
-                                Padding="10"
+                                Padding="15"
                                 SnapsToDevicePixels="true">
                             <ContentPresenter />
                         </Border>
@@ -73,7 +73,7 @@
                          HorizontalContentAlignment="Stretch"
                          Background="#784925"
                          Opacity="0.75"
-                         HorizontalAlignment="Stretch" Width="auto">
+                         HorizontalAlignment="Stretch" Width="auto" Foreground="#FFC1C1C0" FontSize="18">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,2">
@@ -118,7 +118,10 @@
 
             </Grid>
             <Grid Grid.Column="1" Grid.Row="1" Margin="2,2,0,0">
-                <ListBox Name="lbCustomerOrderList" HorizontalContentAlignment="Stretch" Width="auto" Height="auto" Margin="0,0,-3,0" Background="#FFA2704A">
+                <ListBox Name="lbCustomerOrderList"
+                      ItemContainerStyle="{DynamicResource _ListBoxItemStyle}"
+                      HorizontalContentAlignment="Stretch" Width="auto" Height="auto" Margin="0,0,-3,0" Background="#FFA2704A" Foreground="#FF646460" FontSize="18" FontWeight="Bold">
+                    
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Grid Margin="0,0">
@@ -200,11 +203,12 @@
             </Grid>
         </Grid >
         <Popup Name="CustOrderConfirmation"
-
+               Height="250"
+               Width="450"
                Placement="Center"
                AllowsTransparency="False">
 
-            <Grid>
+            <Grid Background="#B7B5AB">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="70*"/>
                     <RowDefinition Height="30*"/>
@@ -214,20 +218,32 @@
                     <ColumnDefinition Width="50*"/>
                 </Grid.ColumnDefinitions>
                 <Canvas>
-                    <Label Grid.Row="0" 
+                    <TextBlock Grid.Row="0" 
                            Grid.Column="0" 
                            Grid.ColumnSpan="2" 
                            HorizontalAlignment="Center"
+                           FontSize="25"
+                           Foreground="#784925"
+                           TextWrapping="Wrap"   
                            >
-                        Are you Ready to Confirm Your Order?</Label>
+                        Are you Ready to Confirm Your Order?</TextBlock>
                 </Canvas>
                 <Button Grid.Row="1" 
                         Grid.Column="0" 
                         Click="Not_Ready_Click" 
-                        Margin="20">No</Button>
+                        Margin="20"
+                        Background="#383534"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="#C48D32"
+                        >No</Button>
                 <Button Grid.Row="1" 
                         Grid.Column="1" 
                         Click="Confirm_Order_Click" 
+                        Background="#383534"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="#C48D32"
                         Margin="20">Yes</Button>
             </Grid>
         </Popup>

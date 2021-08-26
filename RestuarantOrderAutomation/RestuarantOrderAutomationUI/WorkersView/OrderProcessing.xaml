@@ -14,7 +14,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="ListBoxItem">
                         <Border Name="_Border"
-                                Padding="10"
+                                Padding="15"
                                 SnapsToDevicePixels="true">
                             <ContentPresenter />
                         </Border>
@@ -69,7 +69,7 @@
             <ListBox Name="lbOrders"
                         ItemContainerStyle="{DynamicResource _ListBoxItemStyle}"
                          HorizontalContentAlignment="Stretch" 
-                         HorizontalAlignment="Stretch" Width="auto" Background="#784925" FontSize="16" Opacity="0.85" Foreground="#FFE42763" FontWeight="Bold">
+                         HorizontalAlignment="Stretch" Width="auto" Background="#784925" FontSize="18" Opacity="0.85" Foreground="#FFC1C1C0" FontWeight="Bold">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="0,2">
@@ -214,7 +214,7 @@
                
                >
 
-            <Grid>
+            <Grid Background="#B7B5AB">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="10*"/>
                     <RowDefinition Height="30*"/>
@@ -232,8 +232,12 @@
                         <ColumnDefinition Width="20*"/>
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="1"
-                            Name="btnExitOrderProcessPopUp"
-                            Click="btnExitOrderProcessPopUp_Click">
+                        Name="btnExitOrderProcessPopUp"
+                        Click="btnExitOrderProcessPopUp_Click"
+                        Background="#383534"
+                        FontWeight="Bold"
+                        FontSize="20"
+                        Foreground="#DC143C">
                         X
                     </Button>
                 </Grid>
@@ -243,7 +247,9 @@
                            Grid.Column="0" 
                            Grid.ColumnSpan="2" 
                            HorizontalAlignment="Center"
-                           TextWrapping="WrapWithOverflow"
+                           FontSize="15"
+                           Foreground="#784925"
+                           TextWrapping="Wrap" 
                            >
                         Select Current Order Status or Cancel Order</TextBlock>
                 </Canvas>
@@ -252,7 +258,11 @@
                         Click="btnPrepareOrder_Click"
                         Margin="2,2,2,2"
                         Grid.Column="0"
-                        Grid.Row="2">
+                        Grid.Row="2"
+                        Background="#383534"
+                        FontWeight="Bold"
+                        FontSize="14"
+                        Foreground="#C48D32">
                     Prepare Order
                 </Button>
 
@@ -262,6 +272,10 @@
                     Margin="2,2,2,2"
                     Grid.Column="1"
                     Grid.Row="2"
+                    Background="#383534"
+                        FontWeight="Bold"
+                        FontSize="14"
+                        Foreground="#C48D32"
                     >Ready For Collection
                 </Button>
 
@@ -271,6 +285,10 @@
                     Margin="2,2,2,2"
                     Grid.Column="0"
                     Grid.Row="3"
+                    Background="#383534"
+                        FontWeight="Bold"
+                        FontSize="14"
+                        Foreground="#C48D32"
                     >Complete Order
                 </Button>
 
@@ -279,6 +297,10 @@
                         Margin="2,2,2,2" 
                         Grid.Column="1"
                         Grid.Row="3"
+                        Background="#383534"
+                        FontWeight="Bold"
+                        FontSize="14"
+                        Foreground="#C48D32"
                         >Cancel Order</Button>
             </Grid>
         </Popup>

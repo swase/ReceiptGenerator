@@ -15,7 +15,10 @@ namespace BusinessLayer
         {
             using (var db = new Context())
             {
-                return db.Orders.Where(o => o.Status != OrderStatus.Collected && o.Status != OrderStatus.Ordering).ToList();
+                return db.Orders
+                    .Where(o => o.Status != OrderStatus.Collected && o.Status != OrderStatus.Ordering)
+                    .OrderBy(o => o.Status)
+                    .ToList();
             }
         }
 
